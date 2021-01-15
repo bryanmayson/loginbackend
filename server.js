@@ -47,10 +47,34 @@ app.post('/register',(req,res)=>{
     const password = req.body.password
 
     // Inser the username and password into the database
-    db.query("INSERT INTO users (username,password) VALUES(?,?)",[username,password],(err,result)=>{
-        console.log(err);
-        console.log(result);
+    db.query("INSERT INTO user (username,password) VALUES(?,?)",[username,password],(err,result)=>{
+        if (err){
+            res.send(result)
+        }
+        else{
+            res.send({message:"Failed to register account"})
+        }
     })
 
 })
 
+// Login a user account
+app.post('/login',(req,res)=>{
+    const username = req.body.username
+    const password = req.body.password
+
+    db.query(
+        "SELECT username FROM user WHERE username = ? and password = ?",
+        [username,password],
+        (err,result)=>{
+
+            if (err) throw err;
+            if (result.length > 0){
+                res.send(result)
+            }
+            else{
+                res.send({message:"Wrong username/password"})
+            }
+        }
+    )
+})
