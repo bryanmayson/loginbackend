@@ -49,10 +49,10 @@ app.post('/register',(req,res)=>{
     // Inser the username and password into the database
     db.query("INSERT INTO user (username,password) VALUES(?,?)",[username,password],(err,result)=>{
         if (err){
-            res.send(result)
+            res.send({message:"Failed to register account"})
         }
         else{
-            res.send({message:"Failed to register account"})
+            res.send({message:"Account Registered"})
         }
     })
 
